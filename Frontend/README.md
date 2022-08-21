@@ -1,4 +1,4 @@
-# style_avenue_frontend
+# Style Avenue Studio
 
 ## Project setup
 ```
