@@ -1,0 +1,11 @@
+crawler/
+.vscode
+.vscode-test
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+*.egg-info
+*.egg
+env/
+.idea/
