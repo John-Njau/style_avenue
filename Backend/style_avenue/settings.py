@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from datetime import timedelta
-from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    # apps
     'style_avenue_app',
     'corsheaders',
     'djoser',
@@ -54,6 +54,11 @@ SIMPLE_JWT = {
     #Token duration setting
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ALGORITHM': 'HS256',
+    'AUTH_HEADER_TYPES': ('Bearer', ),
+    # 'USER_AUTHENTICATION_RULE':
+    # 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken', ),
 }
 
 # add
@@ -119,7 +124,6 @@ DATABASES = {
         'PASSWORD': 'moringa',
         'HOST': 'localhost',
         'PORT': '5432',
-        
     }
 }
 
@@ -157,8 +161,7 @@ USE_I18N = True
 USE_TZ = True
 
 # custom user model
-AUTH_USER_MODEL ='style_avenue_app.User'
-
+AUTH_USER_MODEL = 'style_avenue_app.User'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
