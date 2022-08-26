@@ -59,7 +59,7 @@
       <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
         <div class="col-10 col-sm-8 col-lg-6">
           <img
-            src="../assets/images/style_avenue_logo.jpg"
+            src="../../assets/images/style_avenue_logo.jpg"
             class="m-auto d-sm-block d-none mx-lg-auto img-fluid"
             alt="Bootstrap Themes"
             width="700"

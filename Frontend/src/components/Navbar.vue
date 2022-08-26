@@ -33,10 +33,22 @@
             <template #button-content>
               <em class="bold">My Account</em>
             </template>
+              <template v-if="$store.state.isAuthenticated">
+
             <div class="m-2 p-2">
               <router-link to="/about">Profile</router-link> <br />
-              <router-link to="#">Sign Out</router-link>
+              <div class="is-danger" @click="signOut()">Sign Out</div>
             </div>
+            </template>
+            <template v-else>
+              <div class="m-2 p-2">
+              <router-link to="/signin">Log in</router-link> <br />
+              <router-link to="/signup">Sign up</router-link>
+            </div>
+            </template>
+            
+            
+
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -63,7 +75,26 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+
+
+export default {
+  methods: {
+    signOut(){
+      axios.defaults.headers.common["Authorization"] ="";
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      localStorage.removeItem("userId");
+
+      localStorage.removeItem("username");
+
+      this.$store.commit("removeToken");
+
+      this.$router.push("/")
+    }
+  },
+};
 </script>
 
 <style>

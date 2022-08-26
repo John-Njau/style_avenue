@@ -5,13 +5,19 @@ import axios from "axios";
 Vue.use(Vuex);
 
 const state = {
-  user: {},
-  token: localStorage.getItem("token") || "",
-  isLoggedIn: false,
-  isAdmin: false,
   isLoading: false,
   categories: [],
   products: [],
+  cart: [],
+  cartTotal: 0,
+  orders: [],
+  order: {},
+  isAuthenticated: false,
+  token: "",
+  // email: "",
+  // password: "",
+  // confirmPassword: "",
+  // errors: [],
 };
 
 const actions = {
@@ -40,13 +46,47 @@ const actions = {
 };
 
 const mutations = {
+  initializeStore(state) {
+    if (localStorage.getItem("token")) {
+      state.token = localStorage.getItem("token");
+      state.isAuthenticated = true;
+    } else {
+      state.token = "";
+      state.isAuthenticated = false;
+    }
+  },
+
   SET_CATEGORIES(state, categories) {
     state.categories = categories;
   },
   SET_PRODUCTS(state, products) {
     state.products = products;
   },
+  setToken(state, token) {
+    state.token = token;
+    state.isAuthenticated = true;
+  },
+  removeToken(state) {
+    state.token = "";
+    state.isAuthenticated = false;
+  },
 };
+
+// const setters = {
+//   getEmail(state) {
+//     return state.email;
+//   },
+//   getPassword(state) {
+//     return state.password;
+//   },
+//   getConfirmPassword(state) {
+//     return state.confirmPassword;
+//   },
+//   getErrors(state) {
+//     return state.errors;
+//   }
+
+// };
 
 const getters = {};
 
@@ -55,6 +95,7 @@ const modules = {};
 export default new Vuex.Store({
   state,
   getters,
+  // setters,
   actions,
   mutations,
   modules,

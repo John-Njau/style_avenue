@@ -11,10 +11,10 @@
 
 <script>
 // @ is an alias to /src
-import LandingPage from "@/components/LandingPage.vue";
+import LandingPage from "@/components/LandingPage/LandingPage.vue";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
-import About from "@/components/About.vue";
+import About from "@/components/LandingPage/About.vue";
 
 export default {
   name: "HomeView",

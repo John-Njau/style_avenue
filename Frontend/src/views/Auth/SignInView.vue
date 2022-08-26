@@ -10,7 +10,6 @@ import SignIn from "@/components/Auth/SignIn.vue";
 export default {
   components: {
     SignIn,
-    SignIn,
   },
   data() {
     return {

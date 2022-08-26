@@ -19,37 +19,28 @@
                   Sign up
                 </p>
 
-                <form class="px-md-2">
-                  <div class="form-outline mb-2">
-                    <input
-                      type="text"
-                      id="form3Example1q"
-                      class="form-control"
-                      placeholder="Your Name"
-                    />
-                  </div>
-
+                <form class="px-md-2" @submit.prevent="Signup">
                   <div class="">
                     <div class="">
                       <div class="form-outline mb-2">
                         <input
                           type="email"
-                          id="form3Example1w"
                           class="form-control"
-                          placeholder="Your Email"
+                          placeholder="Email address"
+                          v-model="email"
                         />
                       </div>
                     </div>
                   </div>
-
+                
                   <div class="">
                     <div class="">
                       <div class="form-outline mb-2">
                         <input
                           type="Password"
-                          id="form3Example1w"
                           class="form-control"
                           placeholder="Password"
+                          v-model="password"
                         />
                       </div>
                     </div>
@@ -59,17 +50,20 @@
                       <div class="form-outline mb-2">
                         <input
                           type="Password"
-                          id="form3Example1w"
                           class="form-control"
                           placeholder="Confirm Password"
+                          v-model="confirmPassword"
                         />
                       </div>
                     </div>
                   </div>
 
                   <button type="submit" class="btn btn-primary btn-sm mb-1">
-                    Submit
+                    Sign up
                   </button>
+                  <div class="notification text-danger" v-if="errors.length">
+                    <p v-for="error in errors" :key="error">{{ error }}</p>
+                  </div>
                   <p>
                     Already have an account?
                     <a href="/signIn">Sign in</a>
@@ -85,7 +79,98 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+import { toast } from "bulma-toast";
+
+export default {
+  data() {
+    return {
+      email: "",
+     
+      password: "",
+      confirmPassword: "",
+      errors: [],
+    };
+  },
+  // computed: {
+  //   email() {
+  //     return this.$store.state.email;
+  //   },
+  //   password() {
+  //     return this.$store.state.password;
+  //   },
+  //   confirmPassword() {
+  //     return this.$store.state.confirmPassword;
+  //   },
+  //   errors() {
+  //     return this.$store.state.errors;
+  //   },
+
+  // },
+  mounted() {
+    // this.$store.dispatch("Signup");
+    document.title = "Style Avenue - Sign up";
+  },
+  methods: {
+    Signup() {
+      this.errors = [];
+
+      if (!this.email) {
+        this.errors.push("Email required.");
+      }
+
+      if (this.password === "") {
+        this.errors.push("The password is too short");
+      }
+
+      if (this.password !== this.confirmPassword) {
+        this.errors.push("Passwords don't match");
+        return;
+      }
+
+      if (!this.errors.length) {
+        const formData = {
+          email: this.email,
+          password: this.password,
+        };
+
+        axios
+          .post("/api/users/", formData)
+          .then((response) => {
+            toast({
+              message: "Account created successfully",
+              type: "is-success",
+              dismissable: true,
+              duration: 2000,
+              position: "bottom-right",
+            });
+            this.$router.push("/signin");
+          })
+          .catch((error) => {
+            if (error.response) {
+              toast({
+                message: "Something went wrong",
+                type: "is-danger",
+                dismissable: true,
+                duration: 2000,
+                position: "bottom-right",
+              });
+              for (const property in error.response.data) {
+                this.errors.push(
+                  `${property}: ${error.response.data[property]}`
+                );
+              }
+              console.log(JSON.stringify(error.response.data));
+            } else if (error.message) {
+              this.errors.push("Something went wrong");
+              console.log(JSON.stringify(error));
+            }
+            console.log(error);
+          });
+      }
+    },
+  },
+};
 </script>
 
 <style>
