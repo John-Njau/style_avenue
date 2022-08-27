@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
@@ -43,8 +44,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     @property
-    def token(self):
-        return ''
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
 
     class Meta:
         verbose_name = _("user")
