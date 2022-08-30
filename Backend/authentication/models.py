@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not username:
@@ -29,11 +30,12 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(_("username"),max_length=150,unique=True,db_index=True,)
+    username = models.CharField(_("username"), max_length=150, unique=True, db_index=True, )
     email = models.EmailField(_("email address"), blank=False, unique=True, db_index=True)
     is_staff = models.BooleanField(_("staff status"), default=False)
     is_active = models.BooleanField(_("active"), default=True, )
-    is_verified = models.BooleanField(_("email verified"),default=False,help_text=_("Designates whether this user email is verified."),)
+    is_verified = models.BooleanField(_("email verified"), default=False,
+                                      help_text=_("Designates whether this user email is verified."), )
     created_at = models.DateTimeField(_("date joined"), auto_now_add=True)
     updated_at = models.DateTimeField(_("date updated"), auto_now=True)
 
@@ -57,37 +59,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return str(self.email)
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    pic = models.ImageField(upload_to='Category-images/')
-    description = models.TextField(max_length=500)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = "Categories"
-
-
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='products/', blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-class Book(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='books/', blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name

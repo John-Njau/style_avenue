@@ -1,9 +1,6 @@
-import datetime
-
 import jwt
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponse
 from django.urls import reverse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -11,8 +8,8 @@ from rest_framework import viewsets, generics, status, views
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Product, Category, User
-from .serializers import ProductSerializer, CategorySerializer, UserSerializer, RegisterSerializer, \
+from .models import User
+from .serializers import UserSerializer, RegisterSerializer, \
     EmailVerificationSerializer, LoginSerializer
 from .utils import Util
 
@@ -38,11 +35,14 @@ class RegisterView(generics.GenericAPIView):
 
         absurl = 'http://' + current_site + relative_link + "?token=" + str(token)
 
+        # absurl = 'http://' + "127.0.0.1:8080" + relative_link + "?token=" + str(token)
+
         email_body = 'Hi ' + user.username + \
                      ' Use the link below to verify your email \n' + absurl
 
         data = {
             'domain': current_site,
+            # 'domain': "127.0.0.1:8080",
             'email_subject': 'Verify your email',
             'email_body': email_body,
             'to_email': user.email
@@ -84,26 +84,6 @@ class LoginAPIView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-def index(request):
-    return HttpResponse('style_avenue_app/index.html')
-
-
-def current_datetime(request):
-    now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse(html)
-
-
-class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):

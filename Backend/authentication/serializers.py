@@ -2,7 +2,7 @@ from django.contrib import auth
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 
-from .models import Product, Category, User
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -79,17 +79,3 @@ class LoginSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
-
-    pass
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
