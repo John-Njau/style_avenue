@@ -4,15 +4,15 @@ from Bookings.models import Book
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('user', 'category', 'product')
+    list_display = ('user', 'product', 'date', 'time')
     list_filter = ('product',)
     fieldsets = (
-        (None, {'fields': ('user', 'category', 'product')}),
+        (None, {'fields': ('user', 'product')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('user', 'category', 'product')}
+            'fields': ('user', 'product')}
          ),
     )
 

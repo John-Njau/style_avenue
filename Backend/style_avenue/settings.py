@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-)#&s0n+=d5%rjmae97ylxp&8w+$+%^eh+&a@epkcz&fw6h3t=9"
+SECRET_KEY = "#&s0n+=d5%rjmae97ylxp&8w+$+%^eh+&a@epkcz&fw6h3t=9"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,18 +42,29 @@ INSTALLED_APPS = [
     "orders",
     "categories",
     "Bookings",
-
+    "expenses",
+    "income",
     #  packages
     "corsheaders",
     "drf_yasg",
     "rest_framework",
+    'django_filters',
     # 'djoser',
     # 'rest_framework_simplejwt',
     # 'rest_framework.authtoken',
 ]
 
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    }
+}
+
 # front end host
 CORS_ALLOWED_ORIGINS = ["http://localhost:8080"]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -109,7 +120,18 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 5,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
     "NON_FIELD_ERRORS_KEY": "error",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+}
+
+JWT_AUTH = {
+    # Authorization:Token xxx
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
 
 # Password validation

@@ -1,11 +1,14 @@
+import datetime
 import jwt
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import viewsets, generics, status, views
+from rest_framework import generics, status, views, viewsets
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
@@ -60,11 +63,28 @@ class verifyEmail(views.APIView):
 
     @swagger_auto_schema(manual_parameters=[token_param_config])
     def get(self, request):
+        id = request.GET.get('id')
+
+        print(id)
+
         token = request.GET.get('token')
+        print(token)
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            email = request.GET.get('email')
+            user = User.objects.filter(email=email).first()
+
+            payload = {
+                'id': user.id,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+                'iat': datetime.datetime.utcnow()
+            }
+
+            token = jwt.decode(payload, settings.SECRET_KEY, algorithms=['HS256'])
+            response = Response()
+
+            # response.set_cookie(key='jwt', value=token, httponly=True)
+
             print('token decoded')
-            user = User.objects.get(id=payload['user_id'])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
@@ -75,6 +95,19 @@ class verifyEmail(views.APIView):
         except jwt.exceptions.DecodeError as identifier:
             return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # response = Response()
+        # print(serializer.data['access'])
+
+        # response.set_cookie(key='jwt', value=serializer.data['access'], httponly=True)
+
+        # payload = {
+        #     'id': user.id,
+        #     'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+        #     'iat': datetime.datetime.utcnow()
+        # }
+        #
+        # token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+
 
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -83,9 +116,109 @@ class LoginAPIView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        user = User.objects.get(email=request.data['email'])
+        if user is None:
+            raise AuthenticationFailed('User not found')
+
+        if not user.check_password(request.data['password']):
+            raise AuthenticationFailed('Incorrect password')
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class LoginView(APIView):
+    def post(self, request):
+        email = request.data['email']
+        password = request.data['password']
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            raise AuthenticationFailed('User not found')
+
+        if not user.check_password(password):
+            raise AuthenticationFailed('Incorrect password')
+
+        payload = {
+            'id': user.id,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            'iat': datetime.datetime.utcnow()
+        }
+
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+
+        response = Response()
+
+        response.set_cookie(key='jwt', value=token, httponly=True)
+
+        response.data = {
+            'jwt': token
+        }
+
+        return response
+
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated')
+
+        user = User.objects.filter(id=payload['id']).first()
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data)
+
+    def delete(self, request):
+        response = Response()
+
+        response.delete_cookie('jwt')
+
+        response.data = {
+            'message': 'success'
+        }
+
+        return response
+
+
+class UserView(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated')
+
+        user = User.objects.filter(payload['id']).first()
+        serializer = UserSerializer(user)
+
+        return Response(token, serializer.data)
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {
+            'message': 'success'
+        }
+        return response

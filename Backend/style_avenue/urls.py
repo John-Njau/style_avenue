@@ -26,12 +26,13 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path('api/', include('style_avenue_app.urls')),
-    path("", include("authentication.urls")),
+    path("auth/", include("authentication.urls")),
     path("", include("categories.urls")),
     path("", include("products.urls")),
     path("", include("orders.urls")),
-
-    # path("api/orders", include("orders.urls")),
+    path("", include("Bookings.urls")),
+    path("expenses/", include("expenses.urls")),
+    path("income/", include("income.urls")),
     # path('swagger(?P<format>\.json|\.yaml)', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path(
         "swagger/",
