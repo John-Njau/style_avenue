@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Navbar class="container-fluid" />
+    <Navbar class="container" />
     <div class="landing container">
       <LandingPage />
     </div>
     <About />
-    <Footer class="container-fluid" />
+    <Footer class="container" />
   </div>
 </template>
 
@@ -22,20 +22,25 @@ export default {
     LandingPage,
     Navbar,
     Footer,
-    About
-},
-mounted() {
-  document
-},
+    About,
+  },
+  data() {
+    return {
+      title: "Home | Style Avenue Studio",
+    };
+  },
+  mounted() {
+    document.title = this.title.toUpperCase();
+  },
 };
 </script>
 <style scoped>
 .landing {
-  margin: 30px;
-   /* font-family: "Akshar", sans-serif; */
-    /* font-family: "Montserrat", sans-serif; */
-    /* font-family: "Nunito Sans", sans-serif; */
-    /* font-family: "Poppins", sans-serif; */
-    /* font-family: "Raleway", sans-serif; */
+  /* margin: 30px; */
+  font-family: "Akshar", sans-serif;
+  /* font-family: "Montserrat", sans-serif; */
+  /* font-family: "Nunito Sans", sans-serif; */
+  /* font-family: "Poppins", sans-serif; */
+  /* font-family: "Raleway", sans-serif; */
 }
 </style>

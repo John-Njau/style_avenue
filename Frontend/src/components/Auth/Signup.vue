@@ -32,7 +32,19 @@
                       </div>
                     </div>
                   </div>
-                
+                  <div class="">
+                    <div class="">
+                      <div class="form-outline mb-2">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="username"
+                          v-model="username"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="">
                     <div class="">
                       <div class="form-outline mb-2">
@@ -68,6 +80,7 @@
                     Already have an account?
                     <a href="/signIn">Sign in</a>
                   </p>
+                  <p>Check your email and verify to log in</p>
                 </form>
               </div>
             </div>
@@ -86,7 +99,7 @@ export default {
   data() {
     return {
       email: "",
-     
+      username: "",
       password: "",
       confirmPassword: "",
       errors: [],
@@ -118,6 +131,9 @@ export default {
       if (!this.email) {
         this.errors.push("Email required.");
       }
+      if (!this.username) {
+        this.errors.push("Username required.");
+      }
 
       if (this.password === "") {
         this.errors.push("The password is too short");
@@ -131,11 +147,12 @@ export default {
       if (!this.errors.length) {
         const formData = {
           email: this.email,
+          username: this.username,
           password: this.password,
         };
 
         axios
-          .post("/api/users/", formData)
+          .post("register/", formData)
           .then((response) => {
             toast({
               message: "Account created successfully",

@@ -1,17 +1,30 @@
 <template>
-  <div class="about">
-    <profile>This is an about page</profile>
-  </div>
+  <main class="container profile">
+    <Navbar />
+    <Profile />
+    <Footer />
+  </main>
 </template>
 <script>
-import  profile  from '@/components/Profile/Profile.vue';
+import Profile from "@/components/Profile/Profile.vue";
+import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
   components: {
-    profile,
+    Profile,
+    Navbar,
+    Footer,
   },
   data() {
+    return {
+    
+      title: "Profile | Style Avenue Studio",
+    };
+  },
+  mounted() {
+    document.title = this.title.toUpperCase();
     
   },
-}
+};
 </script>

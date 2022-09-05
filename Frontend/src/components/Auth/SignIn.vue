@@ -92,7 +92,7 @@ export default {
       localStorage.removeItem("token");
 
       await axios
-          .post("/api/token/", {
+          .post("auth/login/", {
             email: this.email,
             password: this.password,
           })
@@ -104,6 +104,7 @@ export default {
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
             localStorage.setItem("SetToken", token);
+            console.log("token", token);
 
             const toPath = this.$route.query.to || "/";
 

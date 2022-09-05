@@ -1,15 +1,34 @@
 <template>
-  <div class="booking">
-    <p>Booking</p>
-  </div>
+  <main class="container">
+    <Navbar />
+    <Booking />
+    <Footer />
+  </main>
 </template>
 
 <script>
-export default {
+import Booking from "@/components/Booking/booking.vue";
+import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 
-}
+export default {
+  components: {
+    Booking,
+    Navbar,
+    Footer,
+    Navbar,
+  },
+  data() {
+    return {
+      title: "Book | Style Avenue Studio",
+    };
+  },
+
+  mounted() {
+    document.title = this.title.toUpperCase();
+  },
+};
 </script>
 
 <style>
-
 </style>

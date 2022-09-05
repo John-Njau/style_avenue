@@ -1,12 +1,14 @@
 <template>
-  <div class="m-0 p-0 sticky-top">
+  <nav class="p-0 sticky-top">
     <b-navbar toggleable="lg" type="dark" class="px-2 navbar">
       <img
         src="../assets/images/style_avenue_logo.jpg"
         alt=""
         class="img-fluid logo"
       />
-      <b-navbar-brand href="/">Style Avenue Studio</b-navbar-brand>
+      <b-navbar-brand class="text-uppercase fw-bold" href="/"
+        >Style Avenue Studio</b-navbar-brand
+      >
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -24,64 +26,89 @@
           </b-nav-form>
 
           <b-nav-item-dropdown text="Book" class="categories" right>
-            <b-dropdown-item href="#">Make Up Session</b-dropdown-item>
-            <b-dropdown-item href="#">Make Up Classes</b-dropdown-item>
+            <b-dropdown-item href="/booking">Make Up Session</b-dropdown-item>
+            <b-dropdown-item href="/booking">Make Up Classes</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown class="my-account">
             <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em class="bold">My Account</em>
+              <span class="bold">Account</span>
             </template>
-              <template v-if="$store.state.isAuthenticated">
-
-            <div class="m-2 p-2">
-              <router-link to="/about">Profile</router-link> <br />
-              <div class="is-danger" @click="signOut()">Sign Out</div>
-            </div>
+            <template v-if="$store.state.isAuthenticated">
+              <div class="m-2 p-2">
+                <router-link to="/profile">Profile</router-link> <br />
+                <div class="is-danger" @click="signOut()">Sign Out</div>
+              </div>
             </template>
             <template v-else>
               <div class="m-2 p-2">
-              <router-link to="/signin">Log in</router-link> <br />
-              <router-link to="/signup">Sign up</router-link>
-            </div>
+                <router-link to="/signin">Log in</router-link> <br />
+                <router-link to="/signup">Sign up</router-link>
+              </div>
             </template>
-            
-            
-
           </b-nav-item-dropdown>
+          <b-nav-item class="text-center">
+            <router-link to="/cart">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="badge badge-pill badge-light h2">
+                {{ $store.state.cart.length }}
+              </span>
+            </router-link>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
     <hr class="hr mt-0 mb-0" />
     <div class="options text-white m-0 p-0">
-      <ul>
+      <ul v-for="category in categories.results" :key="category.id">
         <li>
-          <router-link to="/category">Make Up</router-link>
-        </li>
-        <li>
-          <router-link to="/category">Fragrance</router-link>
-        </li>
-        <li>
-          <router-link to="/category">Hair</router-link>
-        </li>
-        <li>
-          
-          <router-link to="/booking">Book</router-link>
+          <router-link
+            class="nav-btns"
+            :to="{ name: 'category', params: { id: category.id } }"
+            >{{ category.name }}</router-link
+          >
         </li>
       </ul>
+      <ul>
+        <li>
+          <router-link class="nav-btns" to="/booking">Book</router-link>
+        </li>
+        <li>
+          <router-link class="nav-btns" to="/classes">Classes</router-link>
+        </li>
+      </ul>
+      <!-- <li v-if="category.id">
+          <router-link :to="{ name: 'category', params: { id: category.id } }">Fragrance</router-link>
+        </li>
+        <li v-if="category.id">
+          <router-link to="/category">HairCare</router-link>
+        </li>
+        <li>
+          <router-link to="/category">SkinCare</router-link>
+        </li>
+        <li>
+          <router-link to="/booking">Book</router-link>
+        </li>
+        <li>
+          <router-link to="/classes">Classes</router-link>
+        </li> -->
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
 import axios from "axios";
 
-
 export default {
+  data() {
+    return {
+      title: "Style Avenue Studio",
+    };
+  },
   methods: {
-    signOut(){
-      axios.defaults.headers.common["Authorization"] ="";
+    signOut() {
+      axios.defaults.headers.common["Authorization"] = "";
 
       localStorage.removeItem("token");
       localStorage.removeItem("email");
@@ -91,8 +118,21 @@ export default {
 
       this.$store.commit("removeToken");
 
-      this.$router.push("/")
-    }
+      this.$router.push("/");
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    },
+
+    categories() {
+      return this.$store.state.categories;
+    },
+  },
+  mounted() {
+    this.$store.dispatch("getCategories");
+    console.log(this.$store.state.isAuthenticated);
   },
 };
 </script>
@@ -101,20 +141,62 @@ export default {
 .search,
 .categories,
 .my-account {
-  width: 200px;
+  width: auto;
   margin: auto;
 }
-router-link {
-  color: #42b983;
+
+/* .nav-btns {
+  color: rgb(32, 29, 29);
   text-decoration: none;
-  text-justify: newspaper;
+} */
+
+nav a {
+  font-weight: lighter;
+  color: #1d1b1b;
+  text-decoration: none;
 }
+
+nav a.router-link-exact-active {
+  color: #f2f5ec;
+  /* background-color: #443742; */
+  border-radius: 3px;
+}
+
+.nav-btns:hover {
+  color: #ebe8e2;
+  text-decoration: none;
+}
+
+.options {
+  padding: 0;
+  margin: 0;
+  /* height: 40px; */
+  display: flex;
+  /* justify-content: space-around; */
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-align: center;
+  list-style: none;
+  /* background-color: #121211; */
+  background-color: #be8b2c;
+}
+
+.options ul {
+  backface-visibility: hidden;
+  list-style-type: none;
+  display: flex;
+  /* flex-direction: column; 
+  /* /* background-color: #080705;  */
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
 .logo {
   width: 40px;
-  /* height: 90px; */
-  /* margin-top: -10px; */
-  /* border-block: 1px solid #080705; */
-
   border-radius: 50%;
   margin: 0 5px;
   position: relative;
@@ -126,10 +208,38 @@ router-link {
 }
 
 .hr {
-  border: 2px solid #f0f0d6;
+  /* border: 2px solid #f0f0d6; */
+  /* border: 2px solid #141414; */
+  border: 2px solid #131212;
   width: 100%;
-  opacity: 0.8;
+  opacity: 1.8;
   /* margin-top: 10px; */
   /* margin-bottom: 10px; */
+}
+nav {
+  padding: 30px;
+}
+
+/* .options ul {
+  list-style-type: none;
+  display: flex;
+  /* flex-direction: column; 
+  /* background-color: #080705; 
+  /* justify-content: center; 
+  padding: 0;
+  margin: 0;
+} */
+.options ul li {
+  padding: 5px;
+  margin: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #e2962d;
+}
+
+.options ul li:hover {
+  background-color: #443742;
+  color: #fafafa !important;
+  box-shadow: 1px 1px 1px 1px #e2962d;
 }
 </style>

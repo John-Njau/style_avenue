@@ -8,12 +8,14 @@ const state = {
   isLoading: false,
   categories: [],
   products: [],
-  cart: [],
-  cartTotal: 0,
-  orders: [],
-  order: {},
   isAuthenticated: false,
   token: "",
+  category: {},
+  user: {},
+  cart: [],
+  // cartTotal: 0,
+  // orders: [],
+  // order: {},
   // email: "",
   // password: "",
   // confirmPassword: "",
@@ -23,7 +25,7 @@ const state = {
 const actions = {
   getCategories({ commit }) {
     axios
-      .get("/api/categories/")
+      .get("/categories/")
       .then((res) => {
         commit("SET_CATEGORIES", res.data);
         console.log(res.data);
@@ -32,11 +34,45 @@ const actions = {
         console.log(err);
       });
   },
+  getCategory({ commit }, payload) {
+    axios
+      .get(`/categories/${payload}/`)
+      .then((res) => {
+        commit("SET_CATEGORY", res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   getProducts({ commit }) {
     axios
-      .get("/api/products/")
+      .get("/products/")
       .then((res) => {
         commit("SET_PRODUCTS", res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  getProductsCategory({ commit }, payload) {
+    axios
+      .get("/products/category/" + payload)
+      .then((res) => {
+        commit("SET_PRODUCTS", res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+
+  userProfile({ commit }) {
+    axios
+      .get("/auth/users/1")
+      .then((res) => {
+        commit("SET_USER", res.data);
         console.log(res.data);
       })
       .catch((err) => {
@@ -56,8 +92,15 @@ const mutations = {
     }
   },
 
+  SET_USER(state, user) {
+    state.user = user;
+  },
+
   SET_CATEGORIES(state, categories) {
     state.categories = categories;
+  },
+  SET_CATEGORY(state, category) {
+    state.category = category;
   },
   SET_PRODUCTS(state, products) {
     state.products = products;

@@ -56,39 +56,43 @@
             <!-- Grid column -->
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
               <!-- Links -->
-              <h6 class="text-uppercase fw-bold mb-4">Services</h6>
+              <h6 class="text-uppercase fw-bold mb-4">Products</h6>
               <p>
-                <a href="#!" class="text-reset">Make Up</a>
-              </p>
-              <p>
-                <a href="#!" class="text-reset">Hair</a>
+                <a href="#!" class="text-reset">MakeUp</a>
               </p>
               <p>
                 <a href="#!" class="text-reset">Fragrance</a>
               </p>
               <p>
-                <a href="#!" class="text-reset">Nails</a>
+                <a href="#!" class="text-reset">HairCare</a>
+              </p>
+              <p>
+                <a href="#!" class="text-reset">SkinCare</a>
+              </p>
+
+              <p>
+                <a href="#!" class="text-reset"></a>
               </p>
             </div>
             <!-- Grid column -->
 
             <!-- Grid column -->
-            <!-- <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-               Links -->
-              <!-- <h6 class="text-uppercase fw-bold mb-4">Useful links</h6>
-              <p> -->
-                <!-- <a href="#!" class="text-reset">Pricing</a>
-              </p>
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 class="text-uppercase fw-bold mb-4">Services</h6>
               <p>
-                <a href="#!" class="text-reset">Settings</a>
+                <a href="#!" class="text-reset">Book</a>
               </p>
+
               <p>
-                <a href="#!" class="text-reset">Orders</a>
+                <a href="#!" class="text-reset">Order</a>
               </p>
               <p>
                 <a href="#!" class="text-reset">Help</a>
               </p>
-            </div> -->
+              <p>
+                <a href="#!" class="text-reset">Settings</a>
+              </p>
+            </div>
             <!-- Grid column -->
 
             <!-- Grid column -->
@@ -117,7 +121,6 @@
         class="text-center p-4"
         style="background-color: rgba(0, 0, 0, 0.05)"
       >
-        © 2022 Copyright
         <div>
           <a href="" class="me-4 text-reset">
             <i class="fab fa-facebook"></i>
@@ -138,6 +141,7 @@
             <i class="fab fa-github"></i>
           </a>
         </div>
+        © 2022 Copyright
       </div>
       <!-- Copyright -->
     </footer>

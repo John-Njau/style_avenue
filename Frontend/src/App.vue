@@ -1,55 +1,21 @@
 <template>
   <div id="app">
-    <!-- <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav> -->
-    <router-view/>
+    <!-- <nav> -->
+      <!-- <router-link to="/">Home</router-link> | 
+      <router-link to="/about">About</router-link> -->
+    <!-- </nav> -->
+    <router-view  :key="$route.path"  />
   </div>
 </template>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Akshar:wght@300&family=Koulen&family=Macondo&family=Montserrat:wght@200;500&family=Nunito+Sans:wght@200&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;1,300&family=Raleway:ital,wght@0,300;0,500;1,200&display=swap");
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-.options ul {
-  list-style-type: none;
-  display: flex;
-  /* flex-direction: column; */
-  background-color: #080705;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-}
-.options ul li {
-  padding: 5px;
-  margin: 5px 10px;
-  border: 1px solid #080705;
-  border-radius: 5px;
-  text-align: center;
-  background-color: #e2962d;
-}
-
-.options ul li:hover {
-  background-color: #080705;
-  color: #fafafa;
-  box-shadow: 1px 1px 1px 1px rgb(252, 251, 248);
+  scroll-behavior: smooth;
+  color: #0e151d;
 }
 </style>
