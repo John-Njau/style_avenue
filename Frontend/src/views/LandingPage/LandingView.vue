@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <Navbar class="container" />
-    <div class="landing container">
+  <div class="">
+    <Navbar class="" />
+    <div class="landing">
       <LandingPage />
     </div>
     <About />
-    <Footer class="container" />
+    <Footer class="" />
   </div>
 </template>
 
@@ -37,10 +37,12 @@ export default {
 <style scoped>
 .landing {
   /* margin: 30px; */
-  font-family: "Akshar", sans-serif;
+  /* font-family: "Akshar", sans-serif; */
   /* font-family: "Montserrat", sans-serif; */
   /* font-family: "Nunito Sans", sans-serif; */
   /* font-family: "Poppins", sans-serif; */
   /* font-family: "Raleway", sans-serif; */
+  font-family: 'Noto Sans Buhid', sans-serif;
+font-family: 'Roboto Condensed', sans-serif;
 }
 </style>

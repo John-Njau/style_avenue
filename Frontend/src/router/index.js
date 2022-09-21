@@ -8,6 +8,8 @@ import CategoryView from "../views/Categories/CategoryView.vue";
 import ClassesView from "../views/Classes/ClassesView.vue";
 import CartView from "../views/Cart/CartView.vue";
 import ErrorPage from "../views/Error/ErrorPage.vue";
+import SearchPage from "../views/SearchView.vue";
+import CheckoutPage from "../views/Checkout/Checkout.vue"
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -73,6 +75,16 @@ const routes = [
     name: "NotFound",
     component: ErrorPage,
   },
+  {
+    path: "/search",
+    name: "search",
+    component: SearchPage,
+  },
+  {
+    path:"/cart/checkout",
+    name: "Checkout",
+    component: CheckoutPage
+  }
 ];
 
 const router = new VueRouter({
@@ -81,22 +93,5 @@ const router = new VueRouter({
   routes,
 });
 
-
-
-// router.beforeEach((to, from, next) => {
-  // redirect to login page if not logged in and trying to access a restricted page
-  // const publicPages = ["/", "/signup", "/signin"];
-  // console.log(to.path);
-  // const authRequired = !publicPages.includes(to.path);
-  // console.log("authRequired", authRequired);
-  // const loggedIn = localStorage.getItem("token");
-  // console.log("LoggedIn "+loggedIn);
-
-  // if (authRequired && !loggedIn) {
-  //   return next("/signin");
-  // }
-
-  // next();
-// });
 
 export default router;

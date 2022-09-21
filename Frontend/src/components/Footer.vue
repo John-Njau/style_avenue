@@ -4,7 +4,7 @@
     <footer class="text-center text-lg-start bg-light text-muted">
       <!-- Section: Social media -->
       <section
-        class="
+          class="
           d-flex
           justify-content-center justify-content-lg-between
           p-4
@@ -43,9 +43,9 @@
               <!-- Content -->
               <h6 class="text-uppercase fw-bold mb-4">
                 <img
-                  src="../assets/images/style_avenue_logo.jpg"
-                  alt=""
-                  class="w-25"
+                    src="../assets/images/style_avenue_logo.jpg"
+                    alt=""
+                    class="w-25"
                 />
                 Style Avenue Studio
               </h6>
@@ -118,8 +118,8 @@
 
       <!-- Copyright -->
       <div
-        class="text-center p-4"
-        style="background-color: rgba(0, 0, 0, 0.05)"
+          class="text-center p-4"
+          style="background-color: rgba(0, 0, 0, 0.05)"
       >
         <div>
           <a href="" class="me-4 text-reset">

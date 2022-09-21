@@ -64,17 +64,15 @@
               We'll add onto it with another sentence and probably just keep
               going until we run out of words.
             </p>
-            <a href="#" class="btn btn-sm btn-dark"> Explore </a>
+            <a href="/category/4" class="btn btn-sm btn-dark"> Explore </a>
           </div>
         </div>
       </div>
     </div>
-    <section class="p-0">
+    <section class="p-3">
       <div class="container">
-        <div class="row g-4">
-          <div class="col-md">
-            <div id="map"></div>
-          </div>
+        <div class="m-2">
+          <h4 class="text-uppercase text-center"><strong>Popular Products</strong></h4>
         </div>
       </div>
     </section>
@@ -88,7 +86,7 @@ export default {
 </script>
 
 <style>
-  /* .text-uppercase{
+/* .text-uppercase{
     text-transform: uppercase;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     

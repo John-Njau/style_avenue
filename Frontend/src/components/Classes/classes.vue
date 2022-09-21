@@ -1,7 +1,7 @@
 <template>
-  <main class="container">
+  <main>
     <Navbar />
-    <section class="model">
+    <section class="model container">
       <div class="model-img">
         <img
           class="img"
@@ -9,7 +9,7 @@
           alt="Model Image"
         />
       </div>
-      <div class="model-text m-1">
+      <div class="model-text mt-5 mx-3">
         <span class="header-txt">
           Become a Professional Make Up Artist with us
         </span>
@@ -25,8 +25,8 @@
         </p>
       </div>
     </section>
-    <section>
-      <div class="stats container-fluid">
+    <section class="container">
+      <div class="stats">
         <div class="stat">
           <span class="stat-number">25+</span>
           <span class="stat-text">Students</span>
@@ -45,7 +45,7 @@
         </div>
       </div>
     </section>
-    <section class="toolkits">
+    <section class="toolkits container mb-5">
       <div class="card">
         <img
           class="img-fluid kit-img me-3"
@@ -82,6 +82,8 @@ export default {
 <style>
 .model {
   display: flex;
+  width: 100%;
+  margin: auto auto;
   /* justify-content: space-between; */
   /* align-items: center; */
   /* padding: 0 0; */
@@ -99,18 +101,20 @@ export default {
   font-weight: 400;
 }
 
-.model-img,
 .model-text {
-  width: 50%;
-  margin: auto auto;
+  /* width: 50%; */
+  /* margin: auto auto; */
   /* height: 500px; */
   /* border: 1px solid red; */
 }
 
+.model-img {
+  width: 50%;
+}
 .img {
   width: 100%;
   /* height: 600px; */
-  object-fit: cover;
+  /* object-fit: cover; */
   /* position: center; */
   /* margin: 0 0; */
   /* margin-bottom: 30px; */
@@ -121,7 +125,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   padding: 10px 0;
-  box-shadow: 1px 10px 1px 1px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 1px 10px 1px 1px rgba(0, 0, 0, 0.1); */
   margin-top: -70px;
 }
 
@@ -156,7 +160,6 @@ export default {
   color: #fafafa;
   box-shadow: 1px 1px 1px 1px rgb(252, 251, 248);
 }
-
 
 .kit-img {
   margin: 0 0;

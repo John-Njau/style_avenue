@@ -6,13 +6,13 @@
           <div class="col-lg-8 col-xl-6">
             <div class="card rounded-3 signin-card">
               <img
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img3.webp"
-                class="w-100"
-                style="
+                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img3.webp"
+                  class="w-100"
+                  style="
                   border-top-left-radius: 0.3rem;
                   border-top-right-radius: 0.3rem;
                 "
-                alt="Sample photo"
+                  alt="Sample photo"
               />
               <div class="card-body p-2 p-md-5">
                 <p class="text-center h3 fw-bold mb-5 mx-1 mx-md-4 mt-3">
@@ -24,10 +24,10 @@
                     <div class="">
                       <div class="form-outline mb-2">
                         <input
-                          type="email"
-                          class="form-control"
-                          placeholder="Email address"
-                          v-model="email"
+                            type="email"
+                            class="form-control"
+                            placeholder="Email address"
+                            v-model="email"
                         />
                       </div>
                     </div>
@@ -36,10 +36,10 @@
                     <div class="">
                       <div class="form-outline mb-2">
                         <input
-                          type="text"
-                          class="form-control"
-                          placeholder="username"
-                          v-model="username"
+                            type="text"
+                            class="form-control"
+                            placeholder="username"
+                            v-model="username"
                         />
                       </div>
                     </div>
@@ -47,25 +47,32 @@
 
                   <div class="">
                     <div class="">
-                      <div class="form-outline mb-2">
+                      <div class="input-group form-outline mb-2">
                         <input
-                          type="Password"
-                          class="form-control"
-                          placeholder="Password"
-                          v-model="password"
+                            type="Password"
+                            class="form-control"
+                            placeholder="Password"
+                            id="password"
+                            v-model="password"
                         />
+                        <div class="input-group-append toggle-password" @click="showPassword">
+                          <span class="input-group-text mdi mdi-eye-outline"></span>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="">
                     <div class="">
-                      <div class="form-outline mb-2">
+                      <div class="input-group form-outline mb-2">
                         <input
-                          type="Password"
-                          class="form-control"
-                          placeholder="Confirm Password"
-                          v-model="confirmPassword"
+                            type="Password"
+                            class="form-control"
+                            placeholder="Confirm Password"
+                            v-model="confirmPassword"
                         />
+                        <div class="input-group-append toggle-password">
+                          <span class="input-group-text mdi mdi-eye-outline"></span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -93,7 +100,7 @@
 
 <script>
 import axios from "axios";
-import { toast } from "bulma-toast";
+import {toast} from "bulma-toast";
 
 export default {
   data() {
@@ -105,24 +112,11 @@ export default {
       errors: [],
     };
   },
-  // computed: {
-  //   email() {
-  //     return this.$store.state.email;
-  //   },
-  //   password() {
-  //     return this.$store.state.password;
-  //   },
-  //   confirmPassword() {
-  //     return this.$store.state.confirmPassword;
-  //   },
-  //   errors() {
-  //     return this.$store.state.errors;
-  //   },
 
-  // },
   mounted() {
     // this.$store.dispatch("Signup");
     document.title = "Style Avenue - Sign up";
+    this.$store.dispatch("showPassword");
   },
   methods: {
     Signup() {
@@ -152,40 +146,49 @@ export default {
         };
 
         axios
-          .post("register/", formData)
-          .then((response) => {
-            toast({
-              message: "Account created successfully",
-              type: "is-success",
-              dismissable: true,
-              duration: 2000,
-              position: "bottom-right",
-            });
-            this.$router.push("/signin");
-          })
-          .catch((error) => {
-            if (error.response) {
+            .post("auth/register/", formData)
+            .then((response) => {
               toast({
-                message: "Something went wrong",
-                type: "is-danger",
+                message: "Account created successfully",
+                type: "is-success",
                 dismissable: true,
                 duration: 2000,
                 position: "bottom-right",
               });
-              for (const property in error.response.data) {
-                this.errors.push(
-                  `${property}: ${error.response.data[property]}`
-                );
+              this.$router.push("/signin");
+            })
+            .catch((error) => {
+              if (error.response) {
+                toast({
+                  message: "Something went wrong",
+                  type: "is-danger",
+                  dismissable: true,
+                  duration: 2000,
+                  position: "bottom-right",
+                });
+                for (const property in error.response.data) {
+                  this.errors.push(
+                      `${property}: ${error.response.data[property]}`
+                  );
+                }
+                console.log(JSON.stringify(error.response.data));
+              } else if (error.message) {
+                this.errors.push("Something went wrong");
+                console.log(JSON.stringify(error));
               }
-              console.log(JSON.stringify(error.response.data));
-            } else if (error.message) {
-              this.errors.push("Something went wrong");
-              console.log(JSON.stringify(error));
-            }
-            console.log(error);
-          });
+              console.log(error);
+            });
       }
     },
+    //Another way to show password
+    // showPassword() {
+    //   const password = document.querySelector("#password");
+    //   const type = password.getAttribute("type") === "password" ? "text" : "password";
+    //   password.setAttribute("type", type);
+    //   this.toggleClass();
+    // },
+
+
   },
 };
 </script>

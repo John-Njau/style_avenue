@@ -7,19 +7,15 @@ Vue.use(Vuex);
 const state = {
   isLoading: false,
   categories: [],
+  category: {},
   products: [],
+  product:{},
   isAuthenticated: false,
   token: "",
-  category: {},
-  user: {},
-  cart: [],
-  // cartTotal: 0,
-  // orders: [],
-  // order: {},
-  // email: "",
-  // password: "",
-  // confirmPassword: "",
-  // errors: [],
+  quantity: "",
+  cart: {
+    items: [],
+  },
 };
 
 const actions = {
@@ -79,10 +75,35 @@ const actions = {
         console.log(err);
       });
   },
+  searchProducts({ commit }, payload) {
+    axios
+      .get("/products/search/" + payload)
+      .then((res) => {
+        commit("SET_PRODUCTS", res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  showPassword(){
+    $(".toggle-password").click(function () {
+      $(this).children().toggleClass("mdi-eye-outline mdi-eye-off-outline");
+      let input = $(this).prev();
+      input.attr("type", input.attr("type") === "password" ? "text" : "password");
+    })
+  }
 };
 
 const mutations = {
+
   initializeStore(state) {
+    if (localStorage.getItem("cart")) {
+      state.cart = JSON.parse(localStorage.getItem("cart"));
+    } else {
+      localStorage.setItem("cart", JSON.stringify(state.cart));
+    }
+
     if (localStorage.getItem("token")) {
       state.token = localStorage.getItem("token");
       state.isAuthenticated = true;
@@ -92,26 +113,49 @@ const mutations = {
     }
   },
 
-  SET_USER(state, user) {
-    state.user = user;
+  addToCart(state, item) {
+    const exists = state.cart.items.filter(
+      (i) => i.product.id === item.product.id
+    );
+    if (exists.length) {
+      exists[0].quantity =
+        parseInt(exists[0].quantity) + parseInt(item.quantity);
+    } else {
+      state.cart.items.push(item);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(state.cart));
+  },
+
+  setIsLoading(state, status) {
+    state.isLoading = status;
   },
 
   SET_CATEGORIES(state, categories) {
     state.categories = categories;
   },
+
   SET_CATEGORY(state, category) {
     state.category = category;
   },
+
   SET_PRODUCTS(state, products) {
     state.products = products;
   },
+
   setToken(state, token) {
     state.token = token;
     state.isAuthenticated = true;
   },
+
   removeToken(state) {
     state.token = "";
     state.isAuthenticated = false;
+  },
+
+  clearCart(state) {
+    state.cart.items = [];
+    localStorage.setItem("cart", JSON.stringify(state.cart));
   },
 };
 

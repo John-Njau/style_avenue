@@ -2,12 +2,13 @@
   <nav class="p-0 sticky-top">
     <b-navbar toggleable="lg" type="dark" class="px-2 navbar">
       <img
-        src="../assets/images/style_avenue_logo.jpg"
-        alt=""
-        class="img-fluid logo"
+          src="../assets/images/style_avenue_logo.jpg"
+          alt=""
+          class="img-fluid logo"
       />
-      <b-navbar-brand class="text-uppercase fw-bold" href="/"
-        >Style Avenue Studio</b-navbar-brand
+      <b-navbar-brand class="text-uppercase brand-name fw-bold" href="/"
+      >Style Avenue Studio
+      </b-navbar-brand
       >
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -17,11 +18,16 @@
         <div class="search"></div>
         <b-navbar-nav class="ml-auto">
           <b-nav-form class="search">
-            <b-form-input
-              size="sm"
-              class="m-sm-2 my-2 my-sm-0"
-              placeholder="Search"
-            ></b-form-input>
+            <form method="get" action="/search">
+              <b-form-input
+                  type="search"
+                  name="query"
+                  size="sm"
+                  class="m-sm-2 my-2 my-sm-0"
+                  placeholder="Search Product"
+              >
+              </b-form-input>
+            </form>
             <!-- <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button> -->
           </b-nav-form>
 
@@ -37,13 +43,15 @@
             </template>
             <template v-if="$store.state.isAuthenticated">
               <div class="m-2 p-2">
-                <router-link to="/profile">Profile</router-link> <br />
+                <router-link to="/profile">Profile</router-link>
+                <br/>
                 <div class="is-danger" @click="signOut()">Sign Out</div>
               </div>
             </template>
             <template v-else>
               <div class="m-2 p-2">
-                <router-link to="/signin">Log in</router-link> <br />
+                <router-link to="/signin">Log in</router-link>
+                <br/>
                 <router-link to="/signup">Sign up</router-link>
               </div>
             </template>
@@ -51,22 +59,23 @@
           <b-nav-item class="text-center">
             <router-link to="/cart">
               <i class="fas fa-shopping-cart"></i>
-              <span class="badge badge-pill badge-light h2">
-                {{ $store.state.cart.length }}
+              <span class="badge badge-pill badge-light h1">
+                ({{ cartTotalLength }})
               </span>
             </router-link>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <hr class="hr mt-0 mb-0" />
+    <hr class="hr mt-0 mb-0"/>
     <div class="options text-white m-0 p-0">
       <ul v-for="category in categories.results" :key="category.id">
         <li>
           <router-link
-            class="nav-btns"
-            :to="{ name: 'category', params: { id: category.id } }"
-            >{{ category.name }}</router-link
+              class="nav-btns"
+              :to="{ name: 'category', params: { id: category.id } }"
+          >{{ category.name }}
+          </router-link
           >
         </li>
       </ul>
@@ -104,6 +113,9 @@ export default {
   data() {
     return {
       title: "Style Avenue Studio",
+      cart: {
+        items: [],
+      },
     };
   },
   methods: {
@@ -120,6 +132,11 @@ export default {
 
       this.$router.push("/");
     },
+    SearchProduct() {
+      axios.post("", {
+        query: this.query,
+      });
+    },
   },
   computed: {
     isAuthenticated() {
@@ -128,6 +145,14 @@ export default {
 
     categories() {
       return this.$store.state.categories;
+    },
+    cartTotalLength() {
+      let totalLength = 0;
+
+      for (let i = 0; i < this.cart.items.length; i++) {
+        totalLength += this.cart.items[i].quantity;
+      }
+      return totalLength;
     },
   },
   mounted() {
@@ -138,6 +163,14 @@ export default {
 </script>
 
 <style>
+.brand-name {
+  /* font-family: 'Qwitcher Grypen', cursive; */
+  /* font-family: 'Combo', cursive;
+     */
+  /* font-family: 'Lobster', cursive; */
+  font-family: "Oswald", sans-serif;
+}
+
 .search,
 .categories,
 .my-account {
@@ -184,6 +217,10 @@ nav a.router-link-exact-active {
   background-color: #be8b2c;
 }
 
+.options:hover {
+  background-color: #1b1a19;
+}
+
 .options ul {
   backface-visibility: hidden;
   list-style-type: none;
@@ -201,6 +238,7 @@ nav a.router-link-exact-active {
   margin: 0 5px;
   position: relative;
 }
+
 .navbar {
   background-color: #be8b2c;
   /* box-shadow: 1px 1px 1px 1px rgb(190, 139, 44); */
@@ -216,6 +254,7 @@ nav a.router-link-exact-active {
   /* margin-top: 10px; */
   /* margin-bottom: 10px; */
 }
+
 nav {
   padding: 30px;
 }

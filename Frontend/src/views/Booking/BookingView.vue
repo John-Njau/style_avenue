@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="">
     <Navbar />
     <Booking />
     <Footer />
@@ -16,7 +16,6 @@ export default {
     Booking,
     Navbar,
     Footer,
-    Navbar,
   },
   data() {
     return {

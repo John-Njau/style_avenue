@@ -12,7 +12,7 @@
         <h1 class="h3 mb-3 font-weight-bold">Style Avenue Studio</h1>
       </div>
 
-      <div class="form-label-group m-2">
+      <div class="input-group form-label-group mb-2">
         <input
             type="email"
             id="inputEmail"
@@ -24,7 +24,7 @@
         />
       </div>
 
-      <div class="form-label-group m-2">
+      <div class="input-group form-label-group mb-2">
         <input
             type="password"
             id="inputPassword"
@@ -33,6 +33,9 @@
             v-model="password"
             required
         />
+        <div class="input-group-append toggle-password">
+          <span class="input-group-text mdi mdi-eye-outline"></span>
+        </div>
       </div>
 
       <!-- <div class="checkbox mb-3">
@@ -70,8 +73,6 @@
 
 <script>
 import axios from "axios";
-import {toast} from "bulma-toast";
-import {mapGetters} from "vuex";
 
 export default {
   data() {
@@ -84,6 +85,8 @@ export default {
   mounted() {
     // this.$store.dispatch("Signin");
     document.title = "Style Avenue - Sign In";
+    this.$store.dispatch("showPassword");
+
   },
   methods: {
     async Signin() {
