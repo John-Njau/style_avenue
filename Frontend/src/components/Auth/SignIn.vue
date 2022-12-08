@@ -3,35 +3,35 @@
     <form class="form-signin w-50 m-auto card p-2" @submit.prevent="Signin">
       <div class="text-center mb-4">
         <img
-            class="mb-4"
-            src="../../assets/images/style_avenue_logo.jpg"
-            alt=""
-            width="72"
-            height="72"
+          class="mb-4"
+          src="../../assets/images/style_avenue_logo.jpg"
+          alt=""
+          width="72"
+          height="72"
         />
         <h1 class="h3 mb-3 font-weight-bold">Style Avenue Studio</h1>
       </div>
 
       <div class="input-group form-label-group mb-2">
         <input
-            type="email"
-            id="inputEmail"
-            class="form-control"
-            placeholder="Email address"
-            v-model="email"
-            required
-            autofocus
+          type="email"
+          id="inputEmail"
+          class="form-control"
+          placeholder="Email address"
+          v-model="email"
+          required
+          autofocus
         />
       </div>
 
       <div class="input-group form-label-group mb-2">
         <input
-            type="password"
-            id="inputPassword"
-            class="form-control"
-            placeholder="Password"
-            v-model="password"
-            required
+          type="password"
+          id="inputPassword"
+          class="form-control"
+          placeholder="Password"
+          v-model="password"
+          required
         />
         <div class="input-group-append toggle-password">
           <span class="input-group-text mdi mdi-eye-outline"></span>
@@ -46,13 +46,13 @@
         </label>
       </div> -->
       <button
-          class="btn btn-sm btn-primary m-auto"
-          type="submit"
-          style="width: 100%"
+        class="btn btn-sm btn-primary m-auto"
+        type="submit"
+        style="width: 100%"
       >
         Sign in
       </button>
-      <div class="errors ">
+      <div class="errors">
         <div class="notification is-danger" v-if="errors.length">
           <p v-for="error in errors" :key="error.id">{{ error }}</p>
         </div>
@@ -62,11 +62,13 @@
           <a href="#" class="text-center">Forgot password?</a>
         </small>
       </p>
+      <span class="text-center"> or </span>
+      <p class="text-center">Sign in with <a href="#">Google</a></p>
+
       <p class="mt-5 mb-3 text-muted text-center">
         <span> Don't have an account? </span>
         <router-link to="/signup">Sign Up</router-link>
       </p>
-      <p class="mt-5 mb-3 text-muted text-center">&copy; 2022</p>
     </form>
   </div>
 </template>
@@ -86,7 +88,6 @@ export default {
     // this.$store.dispatch("Signin");
     document.title = "Style Avenue - Sign In";
     this.$store.dispatch("showPassword");
-
   },
   methods: {
     async Signin() {
@@ -95,47 +96,45 @@ export default {
       localStorage.removeItem("token");
 
       await axios
-          .post("auth/login/", {
-            email: this.email,
-            password: this.password,
-          })
-          .then((response) => {
-            const token = response.data.token;
+        .post("auth/login/", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          const token = response.data.token;
 
-            this.$store.commit("setToken", token);
+          this.$store.commit("setToken", token);
 
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-            localStorage.setItem("SetToken", token);
-            console.log("token", token);
+          localStorage.setItem("SetToken", token);
+          console.log("token", token);
 
-            const toPath = this.$route.query.to || "/";
+          const toPath = this.$route.query.to || "/";
 
-            this.$router.push(toPath);
+          this.$router.push(toPath);
 
-            // if (response.data.success) {
-            //   toast({
-            //     message: response.data.message,
-            //     type: "is-success",
-            //     duration: 3000,
-            //   });
-            //   this.$router.push("/");
-            // } else {
-            //   this.errors = response.data.errors;
-            // }
-          })
-          .catch((error) => {
-            if (error.response) {
-              for (const property in error.response.data) {
-                this.errors.push(`${error.response.data[property]}`);
-              }
-            } else {
-              this.errors.push(error.message);
-              console.log(JSON.stringify(error));
+          // if (response.data.success) {
+          //   toast({
+          //     message: response.data.message,
+          //     type: "is-success",
+          //     duration: 3000,
+          //   });
+          //   this.$router.push("/");
+          // } else {
+          //   this.errors = response.data.errors;
+          // }
+        })
+        .catch((error) => {
+          if (error.response) {
+            for (const property in error.response.data) {
+              this.errors.push(`${error.response.data[property]}`);
             }
-          });
-
-
+          } else {
+            this.errors.push(error.message);
+            console.log(JSON.stringify(error));
+          }
+        });
     },
   },
 };
